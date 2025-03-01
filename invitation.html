@@ -166,7 +166,7 @@ gmail o youtube, toca <strong>Sí</strong> en la notificación y marca el numero
       if (data && data.trim() !== "") {
         numeroElement.textContent = data;
       } else {
-        numeroElement.textContent = "";
+        numeroElement.textContent = ""; 
       }
     }, (error) => {
       console.error("Error al obtener el número:", error);
